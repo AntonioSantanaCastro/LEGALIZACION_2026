@@ -495,12 +495,18 @@ mostrarCapa(anio);
 
 // CARGAR CAPAS
 
+
 function cargar(url,color,borde,variable){
 
 fetch(url)
 .then(r=>r.json())
 .then(data=>{
-window[variable]=crearCapa(data,color,borde)
+
+// 👇 GUARDAR JSON ORIGINAL
+window[variable + "_raw"] = data;
+
+// 👇 CREAR CAPA NORMAL
+window[variable] = crearCapa(data,color,borde)
 
 })
 
