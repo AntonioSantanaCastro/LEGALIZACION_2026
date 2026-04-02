@@ -224,19 +224,15 @@ Buscar Predio<br>
 <script>
 function verJSON2022(){
 
-  if(!capa2022){
-    alert("⏳ Espera unos segundos, cargando datos 2021...");
+  if(!capa2022_raw){
+    alert("⏳ Espera que cargue el JSON...");
     return;
   }
 
-  var datos = [];
-
-  capa2022.eachLayer(function(layer){
-    datos.push(layer.feature.properties);
-  });
+  var datos = capa2022_raw.features.map(f => f.properties);
 
   if(datos.length === 0){
-    alert("⚠️ No hay datos en la capa 2021 aún");
+    alert("⚠️ No hay datos");
     return;
   }
 
@@ -250,6 +246,7 @@ function verJSON2022(){
     <tr>
   `;
 
+  // 👇 TODAS LAS COLUMNAS REALES
   Object.keys(datos[0]).forEach(k=>{
     html += `<th>${k}</th>`;
   });
@@ -258,8 +255,8 @@ function verJSON2022(){
 
   datos.forEach(d=>{
     html += "<tr>";
-    Object.values(d).forEach(v=>{
-      html += `<td>${v}</td>`;
+    Object.keys(datos[0]).forEach(k=>{
+      html += `<td>${d[k] ?? ""}</td>`;
     });
     html += "</tr>";
   });
